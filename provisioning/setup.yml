@@ -1,0 +1,19 @@
+---
+- hosts: all
+  roles:
+    - network
+  tags:
+    - network
+
+- hosts: all
+  tasks:
+  - name: Gather network facts
+    ansible.builtin.setup:
+      gather_subset:
+        - network
+
+- hosts: os0
+  roles:
+    - prepare-deployment
+  tags:
+    - prepare-deployment
