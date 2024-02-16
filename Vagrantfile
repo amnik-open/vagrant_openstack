@@ -22,6 +22,7 @@ Vagrant.configure("2") do |config|
       "all_groups:children" => ["openstack", "osds"]
     }
    end
+   os.vm.provision "shell", path: "deploy.sh"
   end
 
   config.vm.define "osd-0" do |osd0|
