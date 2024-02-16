@@ -15,7 +15,8 @@ openstack_config: true
 osd_scenario: collocated
 public_network: {{ ceph_pub_network }}
 cluster_network: {{ ceph_rep_network }}
-  - /dev/vda
+devices:
+  - /dev/vdb
 cinder_backends:
   ceph_cluster:
     volume_driver: cinder.volume.drivers.rbd.RBDDriver
