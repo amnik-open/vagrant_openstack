@@ -25,7 +25,7 @@ cinder_backends:
     rbd_store_chunk_size: 8
     rbd_exclusive_cinder_pool: true
     volume_backend_name: rbddriver
-    rbd_user: "'{{ '{{' }} cinder_ceph_client '{{ '}}' }}"
+    rbd_user: "{{ '{{' }} cinder_ceph_client {{ '}}' }}"
     rbd_secret_uuid: "{{ '{{' }} cinder_ceph_client_uuid {{ '}}' }}"
     report_discard_supported: true
     extra_volume_types:
