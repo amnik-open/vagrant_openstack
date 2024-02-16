@@ -1,0 +1,6 @@
+---
+image_hosts:
+{% for node in groups.get('openstack') %}
+  {{ node }}:
+    ip: {{  hostvars[node]['ansible_br_mgmt']['ipv4']['address'] }}
+{% endfor %}

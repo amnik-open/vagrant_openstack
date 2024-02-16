@@ -1,0 +1,26 @@
+- name: Clone openstack ansible
+  become: true
+  ansible.builtin.git:
+    repo: 'https://opendev.org/openstack/openstack-ansible'
+    dest: /opt/openstack-ansible
+    version: "{{ osa_tag }}"
+
+- name: Create a directory for openstack ansible config
+  become: true
+  ansible.builtin.file:
+    path: /etc/openstack_deploy/conf.d
+    state: directory
+
+- name: Copy services config
+  become: true
+  ansible.builtin.template:
+    src: "{{ item }}.yml.j2"
+    dest: /etc/openstack_deploy/conf.d/{{ item }}.yml
+  loop: "{{ os_services }}"
+
+- name: Copy osa config
+  become: true
+  ansible.builtin.template:
+    src: "{{ item }}.yml.j2"
+    dest: /etc/openstack_deploy/{{ item }}.yml
+  loop: "{{ user_config }}"

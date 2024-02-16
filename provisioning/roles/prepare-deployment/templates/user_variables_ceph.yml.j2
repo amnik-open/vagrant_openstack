@@ -1,0 +1,33 @@
+ceph_conf_overrides_custom:
+  global:
+    mon_max_pg_per_osd: 500
+    osd_pool_default_pg_num: 50
+    osd_pool_default_size: 2
+cinder_default_volume_type: ceph_cluster
+glance_ceph_client: glance
+glance_default_store: rbd
+glance_rbd_store_pool: images
+is_hci: true
+journal_size: 100
+monitor_interface: eth2
+nova_libvirt_images_rbd_pool: vms
+openstack_config: true
+osd_scenario: collocated
+public_network: {{ ceph_pub_network }}
+cluster_network: {{ ceph_rep_network }}
+  - /dev/vda
+cinder_backends:
+  ceph_cluster:
+    volume_driver: cinder.volume.drivers.rbd.RBDDriver
+    rbd_pool: volumes
+    rbd_ceph_conf: /etc/ceph/ceph.conf
+    rbd_store_chunk_size: 8
+    rbd_exclusive_cinder_pool: true
+    volume_backend_name: rbddriver
+    rbd_user: "'{{ '{{' }} cinder_ceph_client '{{ '}}' }}"
+    rbd_secret_uuid: "{{ '{{' }} cinder_ceph_client_uuid {{ '}}' }}"
+    report_discard_supported: true
+    extra_volume_types:
+      - low-iops
+      - high-iops
+      - ultra-high-iops

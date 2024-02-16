@@ -1,0 +1,42 @@
+required_packages:
+ - build-essential
+ - chrony
+ - python3-dev
+ - bridge-utils
+ - debootstrap
+ - ifenslave
+ - ifenslave-2.6
+ - lsof
+ - lvm2
+ - tcpdump
+ - vlan
+management_network: 172.29.236.0/22
+static_routes_management: 172.29.248.0/22
+ceph_pub_network: 172.31.1.0/24
+ceph_rep_network: 172.31.2.0/24
+tunnel_network: 172.29.240.0/22
+used_ips_cluster:
+  - 172.29.236.1,172.29.236.50
+  - 172.29.240.1,172.29.240.50
+  - 172.29.240.1,172.29.240.50
+  - 172.29.244.1,172.29.244.50
+  - 172.29.244.100
+  - 172.29.248.1,172.29.248.50
+  - 172.29.248.100
+  - 172.31.1.1,172.31.1.50
+  - 172.31.2.1,172.31.2.50
+os_services:
+  - ceph
+  - cinder
+  - glance
+  - haproxy
+  - keystone
+  - neutron
+  - nova
+  - placement
+user_config:
+  - openstack_user_config
+  - user_variables_ceph
+  - user_variables
+  - user_secrets
+osa_tag: 27.4.0

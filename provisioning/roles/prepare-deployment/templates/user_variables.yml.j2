@@ -1,0 +1,83 @@
+cinder_osapi_volume_workers_max: 1
+cinder_wsgi_buffer_size: 16384
+cinder_wsgi_processes: 1
+cinder_wsgi_threads: 1
+debug: true
+galera_innodb_log_buffer_size: 4M
+galera_monitoring_allowed_source: 0.0.0.0/0
+galera_my_cnf_overrides:
+  mysqld:
+    innodb_buffer_pool_size: 16M
+    max_allowed_packet: 8M
+    read_buffer_size: 64K
+    sort_buffer_size: 8M
+    thread_cache_size: '8'
+    thread_stack: 192K
+    tmp_table_size: 8M
+galera_wsrep_provider_options:
+  - option: gcache.size
+    value: 4M
+glance_api_threads: 1
+glance_api_workers: 1
+glance_wsgi_processes: 1
+glance_wsgi_threads: 1
+install_method: source
+keystone_httpd_mpm_max_spare_threads: 10
+keystone_httpd_mpm_min_spare_threads: 5
+keystone_httpd_mpm_start_servers: 2
+keystone_httpd_mpm_thread_child: 15
+keystone_httpd_mpm_thread_limit: 15
+keystone_wsgi_processes: 2
+keystone_wsgi_threads: 2
+lxc_container_backing_store: dir
+lxc_container_bind_mounts:
+  - container_directory: /openstack/src
+    host_directory: /home/zuul/src
+  - container_directory: /opt/cache/files
+    host_directory: /opt/cache/files
+lxc_net_address: 10.255.255.1
+lxc_net_dhcp_range: 10.255.255.2,10.255.255.253
+lxc_net_mtu: 1500
+lxc_net_netmask: 255.255.255.0
+neutron_api_threads: 2
+neutron_api_workers: 1
+neutron_metadata_workers: 1
+neutron_ml2_drivers_type: flat,vlan,vxlan
+neutron_num_sync_threads: 1
+neutron_plugin_base:
+  - router
+  - metering
+  - qos
+neutron_plugin_type: ml2.ovs
+neutron_rpc_workers: 1
+neutron_wsgi_processes: 1
+nova_api_threads: 1
+nova_conductor_workers: 1
+nova_metadata_workers: 1
+nova_osapi_compute_workers: 1
+nova_reserved_host_memory_mb: 1024
+nova_cpu_allocation_ratio: 6.0
+nova_reserved_host_cpus: 2
+nova_ram_allocation_ratio: 1.8
+nova_scheduler_workers: 1
+nova_service_negate:
+  - nova-agent.service
+  - nova-resetnetwork.service
+nova_wsgi_buffer_size: 16384
+nova_wsgi_processes: 1
+nova_wsgi_threads: 1
+openstack_hosts_journald_config:
+  RateLimitBurst: 600
+  RateLimitIntervalSec: 60
+  RuntimeMaxFileSize: 100M
+  RuntimeMaxUse: 2G
+  SystemMaxFileSize: 100M
+  SystemMaxUse: 4G
+openstack_hosts_package_state: latest
+openstack_user_kernel_options:
+  - key: kernel.printk
+    value: 4 1 7 4
+placement_wsgi_buffer_size: 16384
+placement_wsgi_processes: 1
+placement_wsgi_threads: 1
+repo_nginx_threads: 2

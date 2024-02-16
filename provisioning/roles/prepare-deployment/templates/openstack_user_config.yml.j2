@@ -1,0 +1,85 @@
+cidr_networks:
+  management: {{ management_network }}
+  ceph_pub: {{ ceph_pub_network }}
+  ceph_rep: {{ ceph_rep_network }}
+  tunnel: {{ tunnel_network }}
+global_overrides:
+  external_lb_vip_address: {{  hostvars['os0']['ansible_eth0']['ipv4']['address'] }}
+  internal_lb_vip_address: {{  hostvars['os0']['ansible_br_mgmt']['ipv4']['address'] }}
+  management_bridge: br-mgmt
+  no_containers: false
+  provider_networks:
+    - network:
+        container_bridge: br-mgmt
+        container_interface: eth1
+        container_type: veth
+        group_binds:
+          - all_containers
+          - hosts
+        ip_from_q: management
+        is_management_address: true
+        static_routes:
+          - cidr: {{ static_routes_management }}
+            gateway: {{ hostvars['os0']['ansible_br_mgmt']['ipv4']['address'] }}
+        type: raw
+    - network:
+        container_bridge: br-vxlan
+        container_interface: eth10
+        container_type: veth
+        group_binds:
+          - neutron_openvswitch_agent
+        ip_from_q: tunnel
+        net_name: vxlan
+        range: 1:1000
+        type: vxlan
+    - network:
+        container_bridge: br-provider
+        container_interface: eth12
+        container_type: veth
+        group_binds:
+          - neutron_openvswitch_agent
+        net_name: vlan
+        network_interface: eth12
+        range: 101:200,301:400
+        type: vlan
+    - network:
+        container_bridge: br-provider
+        container_type: veth
+        group_binds:
+          - neutron_openvswitch_agent
+        net_name: vlan
+        type: flat
+    - network:
+        container_bridge: br-ceph_pub
+        container_interface: eth2
+        container_type: veth
+        group_binds:
+          - glance_api
+          - cinder_api
+          - cinder_volume
+          - nova_compute
+          - ceph-mon
+          - ceph-osd
+        ip_from_q: ceph_pub
+        type: raw
+    - network:
+        container_bridge: br-ceph_rep
+        container_interface: eth3
+        container_type: veth
+        group_binds:
+          - ceph-osd
+        ip_from_q: ceph_rep
+repo-infra_hosts:
+{% for node in groups.get('openstack') %}
+  {{ node }}:
+    ip: {{  hostvars[node]['ansible_br_mgmt']['ipv4']['address'] }}
+{% endfor %}
+shared-infra_hosts:
+{% for node in groups.get('openstack') %}
+  {{ node }}:
+    ip: {{  hostvars[node]['ansible_br_mgmt']['ipv4']['address'] }}
+{% endfor %}
+used_ips:
+{% for ip in used_ips_cluster %}
+  - {{ ip }}
+{% endfor %}

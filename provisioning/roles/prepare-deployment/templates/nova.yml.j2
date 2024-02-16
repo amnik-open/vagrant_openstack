@@ -1,0 +1,12 @@
+---
+compute-infra_hosts:
+{% for node in groups.get('openstack') %}
+  {{ node }}:
+    ip: {{  hostvars[node]['ansible_br_mgmt']['ipv4']['address'] }}
+{% endfor %}
+
+compute_hosts:
+{% for node in groups.get('openstack') %}
+  {{ node }}:
+    ip: {{  hostvars[node]['ansible_br_mgmt']['ipv4']['address'] }}
+{% endfor %}
