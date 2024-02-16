@@ -1,0 +1,25 @@
+- name: Find all files except cloud.yaml in netplan directory
+  ansible.builtin.find:
+    paths: /etc/netplan
+    excludes:
+      - "cloud.yaml"
+  become: true
+  register: netplan_unused_files
+
+- name: Delete extra files in netplan directory
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: absent
+  become: true
+  with_items: "{{ netplan_unused_files['files'] }}"
+
+- name: Add netplan config
+  become: true
+  ansible.builtin.template:
+    src: netplan.yml.j2
+    dest: /etc/netplan/cloud.yaml
+    mode: '0644'
+
+- name: Apply netplan
+  become: true
+  ansible.builtin.command: netplan apply

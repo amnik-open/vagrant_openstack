@@ -1,0 +1,3 @@
+https_proxy_protocol: http
+https_proxy_ip: 192.168.122.1
+https_proxy_port: 1081
